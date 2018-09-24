@@ -1,4 +1,4 @@
 {
-    "secret": "paxful-secret",
-    "apikey": "paxful-api-key-here"
+  "secret": "paxful-secret",
+  "apikey": "paxful-api-key-here"
 }
