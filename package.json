@@ -4,12 +4,17 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "body-parser": "^1.18.3",
+    "concurrently": "^4.0.1",
     "crypto-js": "^3.1.9-1",
+    "express": "^4.16.3",
+    "express-ipn": "^1.0.3",
     "request": "^2.88.0"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently 'node ./paypal/app.js' './paypal/ngrok http 80'"
   },
   "keywords": [],
   "author": "",
