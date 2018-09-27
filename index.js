@@ -1,7 +1,7 @@
 const paxful = require('./paxful')
 
-init()
-async function init() {
+start()
+async function start() {
   const tradeList = await paxful.tradeList()
   console.log(tradeList)
 

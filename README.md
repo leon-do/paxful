@@ -4,20 +4,24 @@ update `config.json`
 
 `npm install`
 
-`npm start`
+```
+if chat contains 'not enough reputation', then skip
+if user doesn't have enough reputation, then send 'not enough reputation'
 
-`http://localhost:4040`
+if last user trade < 24 hours, then send 'one trade per day'
 
-POST `https://1337f00bar.ngrok.io/`
+if chat does NOT have userEmail, then send 'provide email'
 
+if chat does NOT have myEmail, then send 'send to myEmail and verify transaction number'
+
+if chat does NOT have transactionNumber, then 'provide transactionNumber'
+
+save({trade_hash, userEmail, transactionNumber})
+
+paxful.releaseBitcoin()
+
+'Please confirm that you received the bitcoin and provide feedback'
+```
 ---
 
 https://paxful.readthedocs.io/
-
-https://dashboard.ngrok.com/get-started
-
-https://medium.com/@danielsternlicht/handling-paypal-ipn-messages-with-nodejs-5ccd97870c4
-
-https://developer.paypal.com/developer/ipnSimulator/
-
-https://www.paypal.com/cgi-bin/customerprofileweb?cmd=_profile-ipn-notify

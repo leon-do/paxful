@@ -29,8 +29,7 @@ test('user is not reputable b/c too many negative feedback', () => {
     phone_verified: true,
     email_verified: true,
     feedback_positive: 0,
-    feedback_neutral: 99,
-    feedback_negative: 0
+    feedback_negative: 99
   }
   const isReputable = verify.userReputation(mockUserInfo)
   expect(isReputable).toEqual(false)

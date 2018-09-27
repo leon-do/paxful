@@ -4,7 +4,8 @@ function paypalEmail(tradeChatGet) {
     messages += message.text + ' '
   }
   try {
-    return messages.match(/\S+[a-z0-9]@[a-z0-9\.]+/img)[0]
+    // https://stackoverflow.com/questions/14440444/extract-all-email-addresses-from-bulk-text-using-jquery
+    return messages.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi)[0]
   } catch (e) {
     return false
   }

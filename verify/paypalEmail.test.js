@@ -9,7 +9,7 @@ test('parses paypal email from message', () => {
       author: 'theSeller'
     },
     {
-      text: 'my email is test@gmail.com thanks',
+      text: 'my email is test@gmail.com. thanks',
       timestamp: 1537722635702,
       type: 'msg',
       author: 'theBuyer'

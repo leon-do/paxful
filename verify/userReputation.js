@@ -21,10 +21,8 @@ function userReputation(userInfo) {
   const isPhoneVerified = userInfo.phone_verified
   const isEmailVerified = userInfo.email_verified
   const positiveFeedback = userInfo.feedback_positive
-  const neutralFeedback = userInfo.feedback_neutral
   const negativeFeedback = userInfo.feedback_negative
-  const totalFeedback = positiveFeedback + neutralFeedback + negativeFeedback
-  return isPhoneVerified && isEmailVerified && positiveFeedback > 5 && positiveFeedback / totalFeedback >= 0.9
+  return isPhoneVerified && isEmailVerified && positiveFeedback > 5 && positiveFeedback / negativeFeedback >= 0.9
 }
 
 module.exports = userReputation
