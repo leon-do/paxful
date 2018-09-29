@@ -1,4 +1,4 @@
-const verify = require('./index')
+const paxful = require('.')
 
 test('parses paypal email from message', () => {
   const mockMessage = [
@@ -15,7 +15,7 @@ test('parses paypal email from message', () => {
       author: 'theBuyer'
     }
   ]
-  const email = verify.paypalEmail(mockMessage)
+  const email = paxful.findEmail(mockMessage, /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi)
   expect(email).toEqual('test@gmail.com')
 })
 
@@ -34,6 +34,6 @@ test('no email returns false', () => {
       author: 'theBuyer'
     }
   ]
-  const email = verify.paypalEmail(mockMessage)
-  expect(email).toEqual(false)
+  const email = paxful.findEmail(mockMessage, /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi)
+  expect(email).toEqual(null)
 })

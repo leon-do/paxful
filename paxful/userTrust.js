@@ -17,12 +17,15 @@
   last_seen: 'Seen 21 hours ago.' }
 */
 
-function userReputation(userInfo) {
+function userTrust(userInfo) {
   const isPhoneVerified = userInfo.phone_verified
   const isEmailVerified = userInfo.email_verified
   const positiveFeedback = userInfo.feedback_positive
   const negativeFeedback = userInfo.feedback_negative
-  return isPhoneVerified && isEmailVerified && positiveFeedback > 5 && positiveFeedback / negativeFeedback >= 0.9
+  return (
+    userInfo.is_trusted ||
+    (isPhoneVerified && isEmailVerified && positiveFeedback > 5 && positiveFeedback / negativeFeedback >= 0.9)
+  )
 }
 
-module.exports = userReputation
+module.exports = userTrust

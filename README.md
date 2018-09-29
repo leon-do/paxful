@@ -5,8 +5,7 @@ update `config.json`
 `npm install`
 
 ```
-if chat contains 'not enough reputation', then skip
-if user doesn't have enough reputation, then send 'not enough reputation'
+if user doesn't have enough reputation, then skip
 
 if last user trade < 24 hours, then send 'one trade per day'
 
