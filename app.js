@@ -14,7 +14,7 @@ async function start() {
     const userTrust = paxful.userTrust(userInfo)
 
     // if user is not trusted, then skip
-    if (userTrust === false) {
+    if (!userTrust) {
       continue
     }
 
@@ -27,7 +27,7 @@ async function start() {
     const userEmail = paxful.findEmail(tradeChat, /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi)
     if (!userEmail) {
       // tell user to provide email if we haven't already
-      const emailMessage = 'please verify your paypal email'
+      const emailMessage = 'hello. please verify your paypal email'
       if (!paxful.findEmail(tradeChat, emailMessage)){
         await paxful.tradeChatPost(trade.trade_hash, emailMessage)
       }
@@ -37,26 +37,27 @@ async function start() {
     // tell user to send money if we haven't already
     const sendMessage = 'send amount to leondo345@gmail.com and verify your paypal transaction number'
     if (!paxful.findMessage(tradeChat, sendMessage)){
+      // https://www.degraeve.com/reference/urlencoding.php
       await paxful.tradeChatPost(trade.trade_hash, sendMessage)
     }
 
     // if user does not provide paypal transaction
     if (!paxful.findPayPalPayment(tradeChat)) {
-      console.log('waiting confirmation')
       continue
     }
-}
 
-  // if chat contains 'not enough reputation', then skip
-  // const tradeList = await paxful.tradeList()
-  // console.log(tradeList)
-
-  // const userInfo = await paxful.userInfo('ldo')
-  // console.log(userInfo)
-
+    console.log('user has verified')
+  }
   
-
-  // const tradeChatPost = await paxful.tradeChatPost('vMoJN5Db8ox', 'hello world')
-  // console.log(tradeChatPost)
+  // start again
+  await pause(5000)
+  start()
 }
 
+function pause(milliseconds) {
+  return new Promise(res => {
+    setTimeout(() => {
+      res()
+    }, milliseconds)
+  })
+}
