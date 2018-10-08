@@ -1,4 +1,6 @@
 const paxful = require('./paxful')
+require('./db')
+const Transactions = require('./db/models/Transactions')
 
 start()
 async function start() {
@@ -35,7 +37,7 @@ async function start() {
     }
 
     // tell user to send money if we haven't already
-    const sendMessage = 'send amount to leondo345@gmail.com and verify your paypal transaction number'
+    const sendMessage = 'send amount to foobar@aol.org and verify your paypal transaction number'
     if (!paxful.findMessage(tradeChat, sendMessage)){
       // https://www.degraeve.com/reference/urlencoding.php
       await paxful.tradeChatPost(trade.trade_hash, sendMessage)
