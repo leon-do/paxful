@@ -1,4 +1,4 @@
-function findEmail(tradeChatGet, string) {
+function findEmail(tradeChatGet) {
   let messages = ''
   for (let message of tradeChatGet) {
     messages += message.text + ' '

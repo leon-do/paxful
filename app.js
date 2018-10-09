@@ -2,7 +2,6 @@ require('./db')
 const Transactions = require('./db/models/Transactions')
 const paxful = require('./paxful')
 
-
 start()
 async function start() {
   // get open trades
@@ -21,7 +20,19 @@ async function start() {
       continue
     }
 
-    // if last user trade < 24 hours, then send 'one trade per day'
+    // get last trade
+    const lastTrade = await Transactions.findAll({
+      where: {
+        userName: trade.responder_username
+      },
+      order: [['createdAt', 'DESC']]
+    })
+
+    // if user has traded before and their last trade was within 30 days
+    const thirdyDays = 1000 * 60 * 60 * 24 * 30
+    if (lastTrade.length >= 1 && Date.now() - lastTrade[0].createdAt.getTime() < thirdyDays) {
+      continue
+    }
 
     // get trade chat
     const tradeChat = await paxful.tradeChatGet(trade.trade_hash)
@@ -51,7 +62,7 @@ async function start() {
     }
 
     // user has verified. save
-    Transactions.create({
+    await Transactions.create({
       tradeHash: trade.trade_hash,
       userName: trade.responder_username,
       email: userEmail,
