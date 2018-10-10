@@ -23,7 +23,8 @@ async function start() {
     // get last trade
     const lastTrade = await Transactions.findAll({
       where: {
-        userName: trade.responder_username
+        userName: trade.responder_username,
+        isComplete: true
       },
       order: [['createdAt', 'DESC']]
     })
