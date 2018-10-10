@@ -1,7 +1,7 @@
 module.exports = {
   tradeList: [
     {
-      trade_status: 'Active funded',
+      trade_status: 'MOCK DATA',
       fiat_price_per_btc: '1400417.55',
       fiat_amount_requested: '10.00',
       crypto_amount_requested: 714,

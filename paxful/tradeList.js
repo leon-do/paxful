@@ -15,6 +15,10 @@ function tradeList() {
       },
       (err, response) => {
         const data = JSON.parse(response.body).data.trades
+        // if no data, then return false
+        if (data.length === 0) {
+          resolve(false)
+        }
         resolve(data)
       }
     )

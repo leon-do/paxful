@@ -5,7 +5,7 @@ const paxful = require('./paxful')
 start()
 async function start() {
   // get open trades
-  const tradeList = paxful.mock.tradeList || (await paxful.tradeList())
+  const tradeList = await paxful.tradeList() || paxful.mock.tradeList
 
   // loop through each trade
   for (let trade of tradeList) {
@@ -41,15 +41,15 @@ async function start() {
     const userEmail = paxful.findEmail(tradeChat, /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi)
     if (!userEmail) {
       // tell user to provide email if we haven't already
-      const emailMessage = 'hello. please verify your paypal email'
-      if (!paxful.findEmail(tradeChat, emailMessage)) {
+      const emailMessage = 'hello. please provide your paypal email'
+      if (!paxful.findMessage(tradeChat, emailMessage)) {
         await paxful.tradeChatPost(trade.trade_hash, emailMessage)
       }
       continue
     }
 
     // tell user to send money if we haven't already
-    const sendMessage = 'send amount to foobar@aol.org and verify your paypal transaction number'
+    const sendMessage = 'send amount to foobar@aol.org and provide your paypal transaction number'
     if (!paxful.findMessage(tradeChat, sendMessage)) {
       // https://www.degraeve.com/reference/urlencoding.php
       await paxful.tradeChatPost(trade.trade_hash, sendMessage)
@@ -63,6 +63,7 @@ async function start() {
 
     // user has verified. save
     await Transactions.create({
+      isComplete: false,
       tradeHash: trade.trade_hash,
       userName: trade.responder_username,
       email: userEmail,

@@ -2,6 +2,9 @@ const Sequelize = require('sequelize');
 const sequelize = require('../index')
 
 const Transactions = sequelize.define('transactions', {
+  isComplete: {
+    type: Sequelize.BOOLEAN
+  },
   tradeHash: {
     type: Sequelize.STRING
   },
@@ -17,7 +20,8 @@ const Transactions = sequelize.define('transactions', {
 })
 
 // Transactions.sync({force: true}).then(() => {
-//   return Transactions.create({
+//   Transactions.create({
+//     isComplete: false,
 //     tradeHash: Math.floor(Math.random() * 1000).toString(),
 //     userName: 'foobar',
 //     email: 'email@email.com',
