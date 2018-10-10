@@ -29,7 +29,7 @@ async function start() {
     })
 
     // if user has traded before and their last trade was within 30 days
-    const thirdyDays = 1 || 1000 * 60 * 60 * 24 * 30
+    const thirdyDays = 1000 * 60 * 60 * 24 * 30
     if (lastTrade.length >= 1 && Date.now() - lastTrade[0].createdAt.getTime() < thirdyDays) {
       continue
     }
