@@ -29,7 +29,7 @@ async function start() {
     })
 
     // if user has traded before and their last trade was within 30 days
-    const thirdyDays = 1000 * 60 * 60 * 24 * 30
+    const thirdyDays = 1 || 1000 * 60 * 60 * 24 * 30
     if (lastTrade.length >= 1 && Date.now() - lastTrade[0].createdAt.getTime() < thirdyDays) {
       continue
     }
@@ -49,9 +49,8 @@ async function start() {
     }
 
     // tell user to send money if we haven't already
-    const sendMessage = 'send amount to foobar@aol.org and provide your paypal transaction number'
+    const sendMessage = 'send amount to foobar@aol.org and provide the paypal transaction number'
     if (!paxful.findMessage(tradeChat, sendMessage)) {
-      // https://www.degraeve.com/reference/urlencoding.php
       await paxful.tradeChatPost(trade.trade_hash, sendMessage)
     }
 
@@ -61,7 +60,7 @@ async function start() {
       continue
     }
 
-    // user has verified. save
+    // save to db
     await Transactions.create({
       isComplete: false,
       tradeHash: trade.trade_hash,
@@ -69,6 +68,33 @@ async function start() {
       email: userEmail,
       payPalPayment: payPalPayment
     })
+
+    // verifying transaction...
+    const verifyMessage = 'verifying transaction. please wait.'
+    if (!paxful.findMessage(tradeChat, verifyMessage)) {
+      await paxful.tradeChatPost(trade.trade_hash, verifyMessage)
+    }
+
+    // check database to see if transaction is complete
+    const isComplete = await Transactions.findOne({
+      where: {
+        tradeHash: trade.trade_hash
+      }
+    }).then(row => {
+      return row.isComplete
+    })
+
+    // wait until transaction is complete
+    if (!isComplete) {
+      continue
+    }
+
+    // feedback
+    const feedbackMessage = 'The funds have been released. Please confirm payment and provide feedback. I will do the same.'
+    if (!paxful.findMessage(tradeChat, feedbackMessage)) {
+      await paxful.tradeChatPost(trade.trade_hash, feedbackMessage)
+    }
+  
   }
 
   // start again

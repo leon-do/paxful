@@ -1,3 +1,5 @@
+// https://www.degraeve.com/reference/urlencoding.php
+
 const config = require('./config.json')
 const request = require('request')
 const CryptoJS = require('crypto-js')
