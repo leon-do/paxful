@@ -90,7 +90,7 @@ async function start() {
     }
 
     // feedback
-    const feedbackMessage = 'The funds have been released. Please confirm payment and provide feedback. I will do the same.'
+    const feedbackMessage = 'your funds have been released. please provide feedback. I will do the same.'
     if (!paxful.findMessage(tradeChat, feedbackMessage)) {
       await paxful.tradeChatPost(trade.trade_hash, feedbackMessage)
     }
