@@ -5,7 +5,7 @@ const paxful = require('./paxful')
 start()
 async function start() {
   // get open trades
-  const tradeList = await paxful.tradeList() || paxful.mock.tradeList
+  const tradeList = await paxful.tradeList() // paxful.mock.tradeList
 
   // loop through each trade
   for (let trade of tradeList) {
@@ -61,40 +61,34 @@ async function start() {
       continue
     }
 
-    // save to db
-    await Transactions.create({
-      isComplete: false,
-      tradeHash: trade.trade_hash,
-      userName: trade.responder_username,
-      email: userEmail,
-      payPalPayment: payPalPayment
+    // save to db if not already saved
+    const isSaved = await Transactions.findOne({
+      where: {
+        tradeHash: trade.trade_hash
+      }
     })
+    if (!isSaved) {
+      await Transactions.create({
+        isComplete: false,
+        tradeHash: trade.trade_hash,
+        userName: trade.responder_username,
+        email: userEmail,
+        payPalPayment: payPalPayment
+      })
+    }
 
     // verifying transaction...
-    const verifyMessage = 'verifying transaction. please wait.'
+    const verifyMessage = 'verifying transaction...'
     if (!paxful.findMessage(tradeChat, verifyMessage)) {
       await paxful.tradeChatPost(trade.trade_hash, verifyMessage)
     }
 
-    // check database to see if transaction is complete
-    const isComplete = await Transactions.findOne({
-      where: {
-        tradeHash: trade.trade_hash
-      }
-    }).then(row => {
-      return row.isComplete
-    })
-
-    // wait until transaction is complete
-    if (!isComplete) {
-      continue
-    }
-
-    // feedback
-    const feedbackMessage = 'your funds have been released. please provide feedback. I will do the same.'
-    if (!paxful.findMessage(tradeChat, feedbackMessage)) {
-      await paxful.tradeChatPost(trade.trade_hash, feedbackMessage)
-    }
+    /*
+    1. check email for paypal confirmation
+    2. make sure transaction in chat matches email
+    3. release bitcoins
+    4. your funds have been released. please provide feedback. I will do the same.
+    */
   
   }
 
