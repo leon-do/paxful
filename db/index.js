@@ -1,4 +1,4 @@
-const Sequelize = require('sequelize');
+const Sequelize = require('sequelize')
 const sequelize = new Sequelize('paxful', '', '', {
   host: 'localhost',
   dialect: 'postgres',

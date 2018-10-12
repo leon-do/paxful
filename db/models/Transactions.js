@@ -1,4 +1,4 @@
-const Sequelize = require('sequelize');
+const Sequelize = require('sequelize')
 const sequelize = require('../index')
 
 const Transactions = sequelize.define('transactions', {
@@ -16,6 +16,9 @@ const Transactions = sequelize.define('transactions', {
   },
   payPalPayment: {
     type: Sequelize.STRING
+  },
+  amount: {
+    type: Sequelize.FLOAT
   }
 })
 
@@ -25,7 +28,8 @@ const Transactions = sequelize.define('transactions', {
 //     tradeHash: Math.floor(Math.random() * 1000).toString(),
 //     userName: 'foobar',
 //     email: 'email@email.com',
-//     payPalPayment: '23faw32fawsdf'
+//     payPalPayment: '23faw32fawsdf',
+//     amount: 123
 //   })
 // })
 

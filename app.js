@@ -5,7 +5,7 @@ const paxful = require('./paxful')
 start()
 async function start() {
   // get open trades
-  const tradeList = await paxful.tradeList() // paxful.mock.tradeList
+  const tradeList = (await paxful.tradeList()) || [] // paxful.mock.tradeList
 
   // loop through each trade
   for (let trade of tradeList) {
@@ -50,7 +50,9 @@ async function start() {
     }
 
     // tell user to send money if we haven't already
-    const sendMessage = 'send amount to foobar@aol.org and provide the paypal transaction number'
+    const sendMessage = `send ${
+      trade.fiat_amount_requested
+    } dollars to SatoshiDoe@gmail.com and provide the paypal transaction number`
     if (!paxful.findMessage(tradeChat, sendMessage)) {
       await paxful.tradeChatPost(trade.trade_hash, sendMessage)
     }
@@ -73,7 +75,8 @@ async function start() {
         tradeHash: trade.trade_hash,
         userName: trade.responder_username,
         email: userEmail,
-        payPalPayment: payPalPayment
+        payPalPayment: payPalPayment,
+        amount: Number(trade.fiat_amount_requested)
       })
     }
 
@@ -89,7 +92,6 @@ async function start() {
     3. release bitcoins
     4. your funds have been released. please provide feedback. I will do the same.
     */
-  
   }
 
   // start again
