@@ -50,9 +50,7 @@ async function start() {
     }
 
     // tell user to send money if we haven't already
-    const sendMessage = `send ${
-      trade.fiat_amount_requested
-    } dollars to SatoshiDoe@gmail.com and provide the paypal transaction number`
+    const sendMessage = `send ${trade.fiat_amount_requested} dollars to SatoshiDoe@gmail.com and provide the paypal transaction number`
     if (!paxful.findMessage(tradeChat, sendMessage)) {
       await paxful.tradeChatPost(trade.trade_hash, sendMessage)
     }
