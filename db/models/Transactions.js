@@ -17,7 +17,10 @@ const Transactions = sequelize.define('transactions', {
   payPalPayment: {
     type: Sequelize.STRING
   },
-  amount: {
+  dollars: {
+    type: Sequelize.FLOAT
+  },
+  bitcoin: {
     type: Sequelize.FLOAT
   }
 })
@@ -29,7 +32,8 @@ const Transactions = sequelize.define('transactions', {
 //     userName: 'foobar',
 //     email: 'email@email.com',
 //     payPalPayment: '23faw32fawsdf',
-//     amount: 123
+//     dollars: 123,
+//     bitcoin: 0.0001
 //   })
 // })
 

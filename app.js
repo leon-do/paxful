@@ -5,10 +5,11 @@ const paxful = require('./paxful')
 start()
 async function start() {
   // get open trades
-  const tradeList = (await paxful.tradeList()) || [] // paxful.mock.tradeList
+  const tradeList = await paxful.tradeList() || [] // paxful.mock.tradeList
 
   // loop through each trade
   for (let trade of tradeList) {
+
     // get user info
     const userInfo = await paxful.userInfo(trade.responder_username)
 
@@ -74,7 +75,8 @@ async function start() {
         userName: trade.responder_username,
         email: userEmail,
         payPalPayment: payPalPayment,
-        amount: Number(trade.fiat_amount_requested)
+        dollars: Number(trade.fiat_amount_requested),
+        bitcoin: Number(trade.crypto_amount_requested) / 100000000
       })
     }
 
