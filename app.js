@@ -86,6 +86,7 @@ async function start() {
       await paxful.tradeChatPost(trade.trade_hash, verifyMessage)
     }
 
+    console.log(`https://paxful.com/trade/${trade.trade_hash}`)
     /*
     1. check email for paypal confirmation
     2. make sure transaction in chat matches email

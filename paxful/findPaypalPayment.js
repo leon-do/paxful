@@ -1,7 +1,8 @@
 function findPayPalPayment(tradeChatGet) {
   let messages = ''
-  for (let message of tradeChatGet) {
-    messages += message.text + ' '
+  // i = 1 skips the intro text
+  for (let i = 1; i < tradeChatGet.length; i++) {
+    messages += tradeChatGet[i].text + ' '
   }
   try {
     // removes all punctuation

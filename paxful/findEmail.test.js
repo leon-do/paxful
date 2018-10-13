@@ -3,6 +3,12 @@ const paxful = require('.')
 test('parses paypal email from message', () => {
   const mockMessage = [
     {
+      text: 'this text should be ignored even if therez an email@email.com',
+      timestamp: 1537721555450,
+      type: 'msg',
+      author: 'theSeller'
+    },
+    {
       text: 'Please provide your paypal email',
       timestamp: 1537721555450,
       type: 'msg',
@@ -21,6 +27,12 @@ test('parses paypal email from message', () => {
 
 test('no email returns false', () => {
   const mockMessage = [
+    {
+      text: 'this text should be ignored even if therez an email@email.com',
+      timestamp: 1537721555450,
+      type: 'msg',
+      author: 'theSeller'
+    },
     {
       text: 'Please provide your paypal email',
       timestamp: 1537721555450,

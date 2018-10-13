@@ -1,7 +1,8 @@
 function findEmail(tradeChatGet) {
   let messages = ''
-  for (let message of tradeChatGet) {
-    messages += message.text + ' '
+  // i = 1 skips the intro text
+  for (let i = 1; i < tradeChatGet.length; i++) {
+    messages += tradeChatGet[i].text + ' '
   }
   try {
     // https://stackoverflow.com/questions/14440444/extract-all-email-addresses-from-bulk-text-using-jquery
