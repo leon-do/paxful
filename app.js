@@ -6,6 +6,8 @@ start()
 async function start() {
   // get open trades
   const tradeList = await paxful.tradeList() || [] // paxful.mock.tradeList
+  
+  console.log(tradeList.map(val => `https://paxful.com/trade/${val.trade_hash}`))
 
   // loop through each trade
   for (let trade of tradeList) {
@@ -86,7 +88,7 @@ async function start() {
       await paxful.tradeChatPost(trade.trade_hash, verifyMessage)
     }
 
-    console.log(`https://paxful.com/trade/${trade.trade_hash}`)
+    console.log(`\n https://paxful.com/trade/${trade.trade_hash}`)
     /*
     1. check email for paypal confirmation
     2. make sure transaction in chat matches email
@@ -96,7 +98,7 @@ async function start() {
   }
 
   // start again
-  await pause(5000)
+  await pause(10000)
   start()
 }
 
