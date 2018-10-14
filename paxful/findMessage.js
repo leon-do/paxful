@@ -1,7 +1,7 @@
 function findMessage(tradeChatGet, string) {
   let messages = ''
   // i = 1 skips the intro text
-  for (let i = 1; i < tradeChatGet.length; i++) {
+  for (let i = 2; i < tradeChatGet.length; i++) {
     messages += tradeChatGet[i].text + ' '
   }
   try {

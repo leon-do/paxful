@@ -22,9 +22,10 @@ function userTrust(userInfo) {
   const isEmailVerified = userInfo.email_verified
   const positiveFeedback = userInfo.feedback_positive
   const negativeFeedback = userInfo.feedback_negative
+
   return (
     userInfo.is_trusted ||
-    (isPhoneVerified && isEmailVerified && positiveFeedback > 0 && positiveFeedback / negativeFeedback >= 0.9)
+    (isEmailVerified && positiveFeedback >= 0) // isPhoneVerified  && positiveFeedback / negativeFeedback >= 0.9
   )
 }
 
