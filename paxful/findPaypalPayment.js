@@ -5,13 +5,11 @@ function findPayPalPayment(tradeChatGet) {
     messages += tradeChatGet[i].text + ' '
   }
   try {
-    // removes all punctuation
     // split sentence to individual words
-    // finds a string with 17 characters (which is prob transactionId)
-    // ignore characters with @ sign
+    // finds a string with filepicker.io
     return messages
       .split(' ')
-      .filter(val => val.length >= 17 && val.indexOf('filepicker') > -1)[0]
+      .filter(val => val.length >= 17 && val.indexOf('filepicker.io') > -1)[0]
   } catch (e) {
     return null
   }
