@@ -53,7 +53,7 @@ async function start() {
     }
 
     // tell user to send money if we haven't already
-    const sendMessage = `send ${trade.fiat_amount_requested} dollars to SatoshiDoe@gmail.com then provide the paypal transaction number and upload a screenshot of the transaction`
+    const sendMessage = `send ${trade.fiat_amount_requested} dollars to SatoshiDoe@gmail.com then upload a screenshot of the transaction. click PAID when done`
     if (!paxful.findMessage(tradeChat, sendMessage)) {
       await paxful.tradeChatPost(trade.trade_hash, sendMessage)
     }
@@ -83,7 +83,7 @@ async function start() {
     }
 
     // verifying transaction...
-    const verifyMessage = 'verifying transaction...'
+    const verifyMessage = 'verifying transaction. please provide feedback when bitcoin has been released'
     if (!paxful.findMessage(tradeChat, verifyMessage)) {
       await paxful.tradeChatPost(trade.trade_hash, verifyMessage)
     }
