@@ -83,7 +83,7 @@ async function start() {
     }
 
     // verifying transaction...
-    const verifyMessage = 'click "Paid" to say that you paid. verifying transaction...'
+    const verifyMessage = 'verifying transaction...'
     if (!paxful.findMessage(tradeChat, verifyMessage)) {
       await paxful.tradeChatPost(trade.trade_hash, verifyMessage)
     }

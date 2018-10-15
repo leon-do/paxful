@@ -10,9 +10,8 @@ function findPayPalPayment(tradeChatGet) {
     // finds a string with 17 characters (which is prob transactionId)
     // ignore characters with @ sign
     return messages
-      .replace(/[.,]/g, '')
       .split(' ')
-      .filter(val => val.length >= 17 && val.indexOf('@') === -1)[0]
+      .filter(val => val.length >= 17 && val.indexOf('filepicker') > -1)[0]
   } catch (e) {
     return null
   }
