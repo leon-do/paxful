@@ -11,13 +11,14 @@ try {
 async function start() {
   // pause 10 seconds
   await pause(10 * 1000)
-  
-  // get open trades
+
+  // get list of open trades
   const tradeList = (await paxful.tradeList()) || [] // paxful.mock.tradeList
 
+  // log list of open trades
   console.log(tradeList.map(val => `https://paxful.com/trade/${val.trade_hash}`))
 
-  // loop through each trade
+  // loop through each trade from the trade list
   for (let trade of tradeList) {
     // pause 10 seconds
     await pause(10 * 1000)
@@ -25,15 +26,12 @@ async function start() {
     // get user info
     const userInfo = await paxful.userInfo(trade.responder_username)
 
-    // check if user can be trusted
-    const userTrust = paxful.userTrust(userInfo)
-
     // if user is not trusted, then skip
-    if (!userTrust) {
+    if (!paxful.userTrust(userInfo)) {
       continue
     }
 
-    // get last trade
+    // get last completed trade
     const lastTrade = await Transactions.findAll({
       where: {
         userName: trade.responder_username,
@@ -42,7 +40,7 @@ async function start() {
       order: [['createdAt', 'DESC']]
     })
 
-    // if user has traded before and their last trade was within 30 days
+    // if user has traded before and their last trade was within 30 days, then skip
     const thirdyDays = 1000 * 60 * 60 * 24 * 30
     if (lastTrade.length >= 1 && Date.now() - lastTrade[0].createdAt.getTime() < thirdyDays) {
       continue
@@ -52,8 +50,7 @@ async function start() {
     const tradeChat = await paxful.tradeChatGet(trade.trade_hash)
 
     // if user does not provide email
-    const userEmail = paxful.findEmail(tradeChat, /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi)
-    if (!userEmail) {
+    if (!paxful.findEmail(tradeChat, /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi)) {
       // tell user to provide email if we haven't already
       const emailMessage = 'hello. please provide your paypal email'
       if (!paxful.findMessage(tradeChat, emailMessage)) {
@@ -63,14 +60,12 @@ async function start() {
     }
 
     // tell user to send money if we haven't already
-    const sendMessage = `send ${
-      trade.fiat_amount_requested
-    } dollars to SatoshiDoe@gmail.com then upload a screenshot of the transaction. click PAID when done`
+    const sendMessage = `send ${trade.fiat_amount_requested} dollars to SatoshiDoe@gmail.com then upload a screenshot of the transaction. click PAID when done`
     if (!paxful.findMessage(tradeChat, sendMessage)) {
       await paxful.tradeChatPost(trade.trade_hash, sendMessage)
     }
 
-    // if user does not provide paypal transaction
+    // if user does not upload a screenshot of payment, then skip
     const payPalPayment = paxful.findPayPalPayment(tradeChat)
     if (!payPalPayment) {
       continue
@@ -100,7 +95,6 @@ async function start() {
       await paxful.tradeChatPost(trade.trade_hash, verifyMessage)
     }
 
-    console.log(`\n https://paxful.com/trade/${trade.trade_hash}`)
     /*
     1. check email for paypal confirmation
     2. make sure transaction in chat matches email
