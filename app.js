@@ -5,12 +5,15 @@ const paxful = require('./paxful')
 try {
   start()
 } catch (e) {
-  start()
+  // try again in 15 min
+  setTimeout(() => {
+    start()
+  }, 1000 * 60 * 15)
 }
 
 async function start() {
   // pause
-  await pause(5 * 1000)
+  await pause(1000 * 5)
 
   // get list of open trades
   const tradeList = (await paxful.tradeList()) || [] // paxful.mock.tradeList
@@ -21,7 +24,7 @@ async function start() {
   // loop through each trade from the trade list
   for (let trade of tradeList) {
     // pause
-    await pause(5 * 1000)
+    await pause(1000 * 5)
 
     // get user info
     const userInfo = await paxful.userInfo(trade.responder_username)
