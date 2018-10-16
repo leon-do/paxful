@@ -9,6 +9,9 @@ try {
 }
 
 async function start() {
+  // pause 10 seconds
+  await pause(10 * 1000)
+  
   // get open trades
   const tradeList = (await paxful.tradeList()) || [] // paxful.mock.tradeList
 
