@@ -2,15 +2,22 @@ require('./db')
 const Transactions = require('./db/models/Transactions')
 const paxful = require('./paxful')
 
-start()
+try {
+  start()
+} catch (e) {
+  start()
+}
+
 async function start() {
   // get open trades
-  const tradeList = await paxful.tradeList() || [] // paxful.mock.tradeList
-  
+  const tradeList = (await paxful.tradeList()) || [] // paxful.mock.tradeList
+
   console.log(tradeList.map(val => `https://paxful.com/trade/${val.trade_hash}`))
 
   // loop through each trade
   for (let trade of tradeList) {
+    // pause 10 seconds
+    await pause(10 * 1000)
 
     // get user info
     const userInfo = await paxful.userInfo(trade.responder_username)
@@ -53,7 +60,9 @@ async function start() {
     }
 
     // tell user to send money if we haven't already
-    const sendMessage = `send ${trade.fiat_amount_requested} dollars to SatoshiDoe@gmail.com then upload a screenshot of the transaction. click PAID when done`
+    const sendMessage = `send ${
+      trade.fiat_amount_requested
+    } dollars to SatoshiDoe@gmail.com then upload a screenshot of the transaction. click PAID when done`
     if (!paxful.findMessage(tradeChat, sendMessage)) {
       await paxful.tradeChatPost(trade.trade_hash, sendMessage)
     }
@@ -98,7 +107,6 @@ async function start() {
   }
 
   // start again
-  await pause(10000)
   start()
 }
 
