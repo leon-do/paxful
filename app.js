@@ -10,7 +10,7 @@ try {
 
 async function start() {
   // pause 10 seconds
-  await pause(10 * 1000)
+  await pause(5 * 1000)
 
   // get list of open trades
   const tradeList = (await paxful.tradeList()) || [] // paxful.mock.tradeList
@@ -21,7 +21,7 @@ async function start() {
   // loop through each trade from the trade list
   for (let trade of tradeList) {
     // pause 10 seconds
-    await pause(10 * 1000)
+    await pause(5 * 1000)
 
     // get user info
     const userInfo = await paxful.userInfo(trade.responder_username)
