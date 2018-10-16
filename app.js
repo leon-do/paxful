@@ -9,7 +9,7 @@ try {
 }
 
 async function start() {
-  // pause 10 seconds
+  // pause
   await pause(5 * 1000)
 
   // get list of open trades
@@ -20,7 +20,7 @@ async function start() {
 
   // loop through each trade from the trade list
   for (let trade of tradeList) {
-    // pause 10 seconds
+    // pause
     await pause(5 * 1000)
 
     // get user info
